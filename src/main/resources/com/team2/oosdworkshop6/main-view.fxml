@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<HBox fx:id="boxRoot" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team2.oosdworkshop6.MainController">
+<HBox fx:id="boxRoot" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="541.0" prefWidth="872.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team2.oosdworkshop6.MainController">
    <children>
-      <VBox prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #f0e28a;">
+      <VBox prefHeight="541.0" prefWidth="206.0" style="-fx-background-color: #3F2B63;">
          <HBox.margin>
             <Insets />
          </HBox.margin>
@@ -15,30 +19,84 @@
             <Insets bottom="16.0" left="16.0" right="16.0" top="16.0" />
          </padding>
          <children>
-            <Button fx:id="btnCustomers" minWidth="125.0" mnemonicParsing="false" style="-fx-background-color: #f0e28a;" text="Customers">
+            <Pane prefHeight="102.0" prefWidth="174.0">
+               <children>
+                  <Label layoutX="21.0" layoutY="34.0" prefHeight="36.0" prefWidth="133.0" text="Travel Experts" textFill="#e8de29">
+                     <font>
+                        <Font name="Imprint MT Shadow" size="21.0" />
+                     </font>
+                  </Label>
+               </children>
+            </Pane>
+            <Button fx:id="btnCustomers" minWidth="125.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="164.0" style="-fx-background-color: #3F2B63;" text="Customers" textFill="#fcf9f9">
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="btnAgents" minWidth="125.0" mnemonicParsing="false" style="-fx-background-color: #f0e28a;" text="Agents">
+            <Button fx:id="btnAgents" minWidth="125.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="164.0" style="-fx-background-color: #3F2B63;" text="Agents" textFill="#fcf9f9">
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="btnBookings" minWidth="125.0" mnemonicParsing="false" style="-fx-background-color: #f0e28a;" text="Bookings">
+            <Button fx:id="btnBookings" minWidth="125.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="164.0" style="-fx-background-color: #3F2B63;" text="Bookings" textFill="#fcf9f9">
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="btnPackages" minWidth="125.0" mnemonicParsing="false" style="-fx-background-color: #f0e28a;" text="Packages">
+            <Button fx:id="btnPackages" minWidth="125.0" mnemonicParsing="false" prefWidth="164.0" style="-fx-background-color: #3F2B63;" text="Packages" textFill="#fcf9f9">
                <VBox.margin>
                   <Insets top="16.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
-            <Button fx:id="btnQuit" minWidth="125.0" mnemonicParsing="false" style="-fx-background-color: #f0e28a;" text="Quit">
+            <Button fx:id="btnQuit" minWidth="125.0" mnemonicParsing="false" prefHeight="41.0" prefWidth="164.0" style="-fx-background-color: #3F2B63;" text="Quit" textFill="#e8d01d">
                <VBox.margin>
                   <Insets top="38.0" />
                </VBox.margin>
+               <font>
+                  <Font name="System Bold" size="14.0" />
+               </font>
+               <padding>
+                  <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+               </padding>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
             </Button>
          </children>
       </VBox>
