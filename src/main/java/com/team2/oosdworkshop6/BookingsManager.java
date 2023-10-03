@@ -10,9 +10,7 @@ public class BookingsManager {
 
         try {
             Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/travelexperts",
-                    "grayson",
-                    "gra8&H Mg0rf Q\\");
+                    "jdbc:mysql://localhost/travelexperts");
 
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Bookings WHERE CustomerID = ?;");
