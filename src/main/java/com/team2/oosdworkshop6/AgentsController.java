@@ -175,9 +175,11 @@ public class AgentsController {
             // No agent selected, show an error message or handle as needed
             return;
         }
+        DatabaseManager connectDB =new DatabaseManager();
+        Connection conn = connectDB.getConnection();
+       // Properties p = getProperties();
+        try (
 
-        Properties p = getProperties();
-        try (Connection conn = DriverManager.getConnection((String) p.get("url"), p);
              PreparedStatement stmt = conn.prepareStatement("DELETE FROM Agents WHERE AgentId = ?")) {
 
             stmt.setInt(1, selectedAgent.getAgentId());
@@ -199,7 +201,7 @@ public class AgentsController {
         }
     }
 
-    private Properties getProperties() {
+   /* private Properties getProperties() {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream("E:\\CMPP264 - Java Programming\\connection.properties");
@@ -209,7 +211,7 @@ public class AgentsController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     private void openDialog(Agent t1, String mode) {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("agentdialog-view.fxml"));
@@ -258,13 +260,8 @@ public class AgentsController {
         String password = "";
 
         try{
-            FileInputStream fis = new FileInputStream("E:\\CMPP264 - Java Programming\\connection.properties");
-            Properties p = new Properties();
-            p.load(fis);
-            url = (String) p.get("url");
-            user = (String) p.get("user");
-            password = (String) p.get("password");
-            Connection conn = DriverManager.getConnection(url,user,password);
+            DatabaseManager connectDB =new DatabaseManager();
+            Connection conn = connectDB.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("SELECT AgtFirstName FROM Agents");
             while (rs.next()){
@@ -272,7 +269,7 @@ public class AgentsController {
                 cbAgtName.getItems().add(agentName);
             }
             conn.close();
-        } catch (IOException | SQLException e)
+        } catch (SQLException e)
         {
             throw new RuntimeException();
         }
@@ -286,13 +283,8 @@ public class AgentsController {
         String password = "";
 
         try {
-            FileInputStream fis = new FileInputStream("E:\\CMPP264 - Java Programming\\connection.properties");
-            Properties p = new Properties();
-            p.load(fis);
-            url = (String) p.get("url");
-            user = (String) p.get("user");
-            password = (String) p.get("password");
-            Connection conn = DriverManager.getConnection(url, user, password);
+            DatabaseManager connectDB =new DatabaseManager();
+            Connection conn = connectDB.getConnection();
             Statement stmt = conn.createStatement();
             ResultSet rs = stmt.executeQuery("select * from Agents");
             ResultSetMetaData rsmd = rs.getMetaData();
@@ -303,7 +295,7 @@ public class AgentsController {
                         rs.getString(6), rs.getString(7), rs.getInt(8)));
             }
             conn.close();
-        } catch (IOException | SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
 

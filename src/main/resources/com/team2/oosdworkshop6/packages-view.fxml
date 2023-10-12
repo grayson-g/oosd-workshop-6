@@ -1,14 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="com.team2.oosdworkshop6.PackagesController"
-            prefHeight="400.0" prefWidth="600.0">
-
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="468.0" prefWidth="739.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team2.oosdworkshop6.PackagesController">
+   <children>
+      <GridPane layoutX="14.0" layoutY="14.0" prefHeight="450.0" prefWidth="714.0">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="709.5" minWidth="10.0" prefWidth="709.5" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="281.5" minWidth="4.5" prefWidth="4.5" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="122.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="331.0" minHeight="10.0" prefHeight="327.5" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="72.5" minHeight="0.0" prefHeight="3.5" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="tblData" prefHeight="331.0" prefWidth="699.0" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn prefWidth="75.0" text="C1" />
+                <TableColumn prefWidth="75.0" text="C2" />
+              </columns>
+            </TableView>
+            <HBox alignment="CENTER" prefHeight="39.0" prefWidth="688.0">
+               <children>
+                  <Label alignment="CENTER" prefHeight="26.0" prefWidth="144.0" text="Packages" textFill="#e85a37">
+                     <font>
+                        <Font name="System Bold" size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <HBox alignment="BASELINE_RIGHT" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="btnAdd" mnemonicParsing="false" prefHeight="33.0" prefWidth="65.0" text="Add">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnEdit" disable="true" mnemonicParsing="false" prefHeight="33.0" prefWidth="63.0" text="Edit">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btnDelete" disable="true" mnemonicParsing="false" prefHeight="33.0" prefWidth="62.0" text="Delete">
+                     <padding>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </padding>
+                     <HBox.margin>
+                        <Insets bottom="8.0" left="8.0" right="8.0" top="8.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </GridPane>
+   </children>
 </AnchorPane>

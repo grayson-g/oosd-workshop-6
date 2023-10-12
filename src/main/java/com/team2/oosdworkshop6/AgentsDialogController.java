@@ -89,6 +89,7 @@ public class AgentsDialogController {
                 closeWindow(mouseEvent);
             }
         });
+
     }
 
     private void closeWindow(MouseEvent mouseEvent) {
@@ -97,7 +98,7 @@ public class AgentsDialogController {
         stage.close();
     }
 
-    private Properties getProperties() {
+/*    private Properties getProperties() {
         FileInputStream fis = null;
         try {
             fis = new FileInputStream("E:\\CMPP264 - Java Programming\\connection.properties");
@@ -107,14 +108,15 @@ public class AgentsDialogController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-    }
+    }*/
 
     private void btnSaveClicked(MouseEvent mouseEvent) {
-        Properties p = getProperties();
-        Connection conn = null;
-        try {
-            conn = DriverManager.getConnection((String) p.get("url"), p);
 
+
+        try {
+
+            DatabaseManager connectDB =new DatabaseManager();
+            Connection conn = connectDB.getConnection();
             String sql = "";
             if (mode.equals("edit"))
             {
