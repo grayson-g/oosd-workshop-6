@@ -77,7 +77,7 @@ public class PackagesController {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
 
-                            boolean confirmed = showConfirmationDialog("Confirm Deletion", "Are you sure you want to delete this record?");
+                            boolean confirmed = showConfirmationDialog();
                             if (confirmed) {
                                 getDeletePackage(t1);
                                 System.out.println("Record deleted.");
@@ -168,30 +168,14 @@ public class PackagesController {
                 // Use a switch statement to map the original column names to new headers
                 String columnHeader;
                 switch (columnName) {
-                    case "PackageId":
-                        columnHeader = "ID";
-                        break;
-                    case "PkgName":
-                        columnHeader = "Package Name";
-                        break;
-                    case "PkgStartDate":
-                        columnHeader = "Start Date";
-                        break;
-                    case "PkgEndDate":
-                        columnHeader = "End Date";
-                        break;
-                    case "PkgDesc":
-                        columnHeader = "Description";
-                        break;
-                    case "PkgBasePrice":
-                        columnHeader = "Base Price";
-                        break;
-                    case "PkgAgencyCommission":
-                        columnHeader = "Agency Commission";
-                        break;
-                    default:
-                        columnHeader = columnName; // Use the original column name if no mapping is defined
-                        break;
+                    case "PackageId" -> columnHeader = "ID";
+                    case "PkgName" -> columnHeader = "Package Name";
+                    case "PkgStartDate" -> columnHeader = "Start Date";
+                    case "PkgEndDate" -> columnHeader = "End Date";
+                    case "PkgDesc" -> columnHeader = "Description";
+                    case "PkgBasePrice" -> columnHeader = "Base Price";
+                    case "PkgAgencyCommission" -> columnHeader = "Agency Commission";
+                    default -> columnHeader = columnName; // Use the original column name if no mapping is defined
                 }
 
                 column.setText(columnHeader); // Set the column header text
@@ -212,11 +196,11 @@ public class PackagesController {
     }
 
     // Method to show a confirmation dialog
-    private boolean showConfirmationDialog(String title, String message) {
+    private boolean showConfirmationDialog() {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        alert.setTitle(title);
+        alert.setTitle("Confirm Deletion");
         alert.setHeaderText(null);
-        alert.setContentText(message);
+        alert.setContentText("Are you sure you want to delete this record?");
 
         // Show the dialog and wait for a response
         alert.showAndWait();

@@ -86,9 +86,10 @@ public class ModifyPackageController {
 
         DatabaseManager connectDB =new DatabaseManager();
         Connection conn = connectDB.getConnection();
+        String sql1 = null;
         try {
 
-            String sql1 = "";
+
             if(mode.equals("edit")){
                 sql1= "UPDATE `packages` SET `PkgName`=?," +
                         "`PkgStartDate`=?,`PkgEndDate`=?,`PkgDesc`=?," +
