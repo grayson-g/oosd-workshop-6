@@ -7,7 +7,6 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.text.Text?>
 
-
 <AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team2.oosdworkshop6.ModifyBookingController">
    <children>
       <Text layoutX="14.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Booking Id" />
@@ -24,7 +23,7 @@
       <ComboBox fx:id="cmbPackage" layoutX="14.0" layoutY="199.0" prefHeight="25.0" prefWidth="233.0" />
       <DatePicker fx:id="dpBookingDate" layoutX="14.0" layoutY="254.0" prefHeight="25.0" prefWidth="233.0" />
       <Text layoutX="14.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
-      <Button fx:id="btnSave" layoutX="401.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
-      <Button fx:id="btnCancel" layoutX="292.0" layoutY="43.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="90.0" text="Save" />
+      <Button fx:id="btnSave" layoutX="401.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Save" />
+      <Button fx:id="btnCancel" layoutX="292.0" layoutY="43.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="90.0" text="Cancel" />
    </children>
 </AnchorPane>

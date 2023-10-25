@@ -69,7 +69,7 @@ public class MainController {
         assert btnPackages != null : "fx:id=\"btnPackages\" was not injected: check your FXML file 'main-view.fxml'.";
         assert btnQuit != null : "fx:id=\"btnQuit\" was not injected: check your FXML file 'main-view.fxml'.";
 
-        setView("bookings-view.fxml");
+        setView("customers-view.fxml");
 
         btnAgents.setOnAction(view -> setView("agents-view.fxml"));
         btnCustomers.setOnAction(view -> setView("customers-view.fxml"));

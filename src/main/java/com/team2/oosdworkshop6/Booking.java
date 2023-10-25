@@ -4,13 +4,12 @@ import javafx.beans.property.*;
 
 import java.sql.Date;
 import java.text.DateFormat;
-import java.text.FieldPosition;
-import java.text.ParsePosition;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
 public class Booking {
     private int bookingId;
-    private StringProperty bookingDate;
+    private StringProperty bookingDateString;
     private StringProperty bookingNo;
     private IntegerProperty travellerCount;
     private StringProperty customerName;
@@ -18,9 +17,12 @@ public class Booking {
     private StringProperty packageName;
 
     private final DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
+    private Date bookingDate;
 
     public Booking(int bookingId, Date bookingDate, String bookingNo, Integer travellerCount, String customerName, String tripType, String packageName) {
-        this.bookingDate = new SimpleStringProperty(dateFormat.format(bookingDate));
+        this.bookingDate = bookingDate;
+        this.bookingId = bookingId;
+        this.bookingDateString = new SimpleStringProperty(dateFormat.format(bookingDate));
         this.bookingNo = new SimpleStringProperty(bookingNo);
         this.travellerCount = new SimpleIntegerProperty(travellerCount);
         this.customerName = new SimpleStringProperty(customerName);
@@ -32,20 +34,25 @@ public class Booking {
         return bookingId;
     }
 
-    public String getBookingDate() {
-        return bookingDate.get();
+    public String getBookingDateString() {
+        return bookingDateString.get();
     }
 
-    public StringProperty bookingDateProperty() {
-        return bookingDate;
+    public StringProperty bookingDateStringProperty() {
+        return bookingDateString;
     }
 
-    public void setBookingDate(String bookingDate) {
-        this.bookingDate.set(bookingDate);
+    public void setBookingDateString(String bookingDateString) {
+        this.bookingDate = java.sql.Date.valueOf(bookingDateString);
+        this.bookingDateString.set(bookingDateString);
     }
 
     public void setBookingDate(Date bookingDate) {
-        this.bookingDate.set(dateFormat.format(bookingDate));
+        this.bookingDateString.set(dateFormat.format(bookingDate));
+    }
+
+    public Date getBookingDate() {
+        return this.bookingDate;
     }
 
     public String getBookingNo() {

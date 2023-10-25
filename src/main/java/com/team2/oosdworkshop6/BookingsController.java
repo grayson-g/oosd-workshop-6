@@ -1,5 +1,6 @@
 package com.team2.oosdworkshop6;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,11 +11,16 @@ import java.util.ResourceBundle;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Modality;
+import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
 public class BookingsController {
@@ -95,18 +101,32 @@ public class BookingsController {
             }
         });
 
-        cmbCustomers.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                BookingCustomer customer = cmbCustomers.getSelectionModel().getSelectedItem();
-                System.out.println(customer.getCustomerId());
-                loadCustomerBookings(customer.getCustomerId());
+        cmbCustomers.setOnAction(action -> {
+            BookingCustomer customer = cmbCustomers.getSelectionModel().getSelectedItem();
+            System.out.println(customer.getCustomerId());
+            loadCustomerBookings(customer.getCustomerId());
+        });
+
+        btnEdit.setOnAction(action -> {
+            Booking booking = tblBookings.getSelectionModel().getSelectedItem();
+            if (booking == null) { return; }
+
+            modifyBooking(booking);
+        });
+
+        btnNew.setOnAction(action -> {
+            modifyBooking(null);
+        });
+
+        btnDelete.setOnAction(action -> {
+            if (cmbCustomers.getValue() != null && tblBookings.getSelectionModel().getSelectedItem() != null) {
+                deleteBooking(tblBookings.getSelectionModel().getSelectedItem().getBookingId());
             }
         });
 
         loadCustomers();
 
-        tcBookingDate.setCellValueFactory(new PropertyValueFactory<Booking, String>("bookingDate"));
+        tcBookingDate.setCellValueFactory(new PropertyValueFactory<Booking, String>("bookingDateString"));
         tcBookingNo.setCellValueFactory(new PropertyValueFactory<Booking, String>("bookingNo"));
         tcTravellerCount.setCellValueFactory(new PropertyValueFactory<Booking, Integer>("travellerCount"));
         tcCustomerName.setCellValueFactory(new PropertyValueFactory<Booking, String>("customerName"));
@@ -202,6 +222,77 @@ public class BookingsController {
 
         }
 
+        customerBookings.sort((a, b) -> {
+            // sort by date descending
+            return b.getBookingDate().compareTo(a.getBookingDate());
+        });
         tblBookings.getItems().addAll(customerBookings);
+    }
+
+    private void modifyBooking(Booking booking) {
+        FXMLLoader fxmlloader = new FXMLLoader(HelloApplication.class.getResource("modify-bookings-view.fxml"));
+        Parent parent = null;
+
+        try {
+            parent = fxmlloader.load();
+        }
+        catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        BookingCustomer customer = cmbCustomers.getSelectionModel().getSelectedItem();
+
+        if (customer == null) { return; }
+
+        ModifyBookingController controller = fxmlloader.<ModifyBookingController>getController();
+        if (booking == null) {
+            controller.addBooking(customer);
+        }
+        else {
+            controller.editBooking(customer, booking);
+        }
+
+        Scene scene = new Scene(parent);
+        Stage stage = new Stage();
+        stage.initModality(Modality.APPLICATION_MODAL);
+
+        if (booking == null) {
+            stage.setTitle("Create Booking");
+        }
+        else {
+            stage.setTitle("Edit Booking");
+        }
+        stage.setScene(scene);
+        stage.showAndWait();
+
+        loadCustomerBookings(customer.getCustomerId());
+    }
+
+    private void deleteBooking(int bookingId) {
+        final String sqlDeleteDetails =
+                "DELETE FROM bookingdetails WHERE BookingId = ?;";
+        final String sqlDeleteBooking =
+                "DELETE FROM bookings WHERE BookingId = ?;";
+
+        try {
+            Connection conn = new DatabaseManager().getConnection();
+            PreparedStatement statementDeleteBooking = conn.prepareStatement(sqlDeleteBooking);
+            PreparedStatement statementDeleteDetails = conn.prepareStatement(sqlDeleteDetails);
+
+            statementDeleteBooking.setInt(1, bookingId);
+            statementDeleteDetails.setInt(1, bookingId);
+
+            statementDeleteDetails.executeUpdate();
+            statementDeleteDetails.close();
+            statementDeleteBooking.executeUpdate();
+            statementDeleteBooking.close();
+
+            conn.close();
+
+            loadCustomerBookings(cmbCustomers.getValue().getCustomerId());
+        }
+        catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
