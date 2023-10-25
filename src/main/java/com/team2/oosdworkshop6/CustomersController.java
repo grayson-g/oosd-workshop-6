@@ -55,7 +55,8 @@ public class CustomersController {
         ObservableList<String> customerIds = FXCollections.observableArrayList();
         //if you encounter issues with an unsuitable driver, try adding the latest mysql connector JAR file to external libraries
         try {
-            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
+//            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
+            Connection connection = new DatabaseManager().getConnection();
 
             //SQL statement for selecting CustomerId
             Statement statement = connection.createStatement();
@@ -83,7 +84,8 @@ public class CustomersController {
                 originalCustomerId = selectedCustomerId; //stores tbe original customer ID
                 //SQL statement to select customer ID from the database
                 try {
-                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
+                    Connection connection = new DatabaseManager().getConnection();
+//                    Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
                     PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM Customers WHERE CustomerId = ?");
                     preparedStatement.setString(1, selectedCustomerId);
 
@@ -131,7 +133,8 @@ public class CustomersController {
     public void handleSaveButton(ActionEvent event) {
         if (isEditMode) {
             try {
-                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
+                Connection connection = new DatabaseManager().getConnection();
+//                Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/travelexperts", "root", "");
                 PreparedStatement preparedStatement = connection.prepareStatement(
                         "UPDATE Customers " +
                                 "SET CustFirstName = ?, CustLastName = ?, CustAddress = ?, CustCity = ?, CustProv = ?, CustPostal = ?, CustCountry = ?, CustHomePhone = ?, AgentId = ? " +

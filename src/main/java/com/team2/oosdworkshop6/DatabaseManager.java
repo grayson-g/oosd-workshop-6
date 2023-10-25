@@ -1,26 +1,30 @@
 package com.team2.oosdworkshop6;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class DatabaseManager {
     // Database connection parameters
-    private static final String DB_URL = "jdbc:mysql://localhost:3306/travelexperts";
-    private static final String DB_USER = "deepa";
-    private static final String DB_PASSWORD = "deepa";
+    private static final String DB_URL = "jdbc:mariadb://172.27.65.108/travelexperts";
+    private static final String DB_USER = "grayson";
+    private static final String DB_PASSWORD = "password";
 
     private Connection connection;
 
     // Constructor to initialize the database connection
     public DatabaseManager() {
+        // Grayson - I added the mariadb driver to the pom.xml, so it should be found automatically
         try {
-            // Load the JDBC driver (you may need to add the JDBC driver JAR to your project)
-            Class.forName("com.mysql.cj.jdbc.Driver");
-
-            // Establish the database connection
-            connection = DriverManager.getConnection(DB_URL, DB_USER, DB_PASSWORD);
-        } catch (ClassNotFoundException | SQLException e) {
+            connection = DriverManager.getConnection(
+                    DB_URL,
+                    DB_USER,
+                    DB_PASSWORD);
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

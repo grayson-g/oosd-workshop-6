@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Text?>
+
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/20.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.team2.oosdworkshop6.ModifyBookingController">
+   <children>
+      <Text layoutX="14.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Booking Id" />
+      <TextField fx:id="txtBookingId" disable="true" editable="false" layoutX="14.0" layoutY="92.0" prefHeight="25.0" prefWidth="57.0" />
+      <Text layoutX="85.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Booking No" />
+      <TextField fx:id="txtBookingNo" layoutX="85.0" layoutY="92.0" prefHeight="25.0" prefWidth="90.0" />
+      <Text layoutX="185.0" layoutY="88.0" strokeType="OUTSIDE" strokeWidth="0.0" text="# Travellers" />
+      <TextField fx:id="txtTravellerCount" layoutX="185.0" layoutY="92.0" prefHeight="25.0" prefWidth="57.0" />
+      <Text layoutX="14.0" layoutY="38.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Customer" />
+      <TextField fx:id="txtCustomerName" disable="true" editable="false" layoutX="14.0" layoutY="42.0" prefHeight="25.0" prefWidth="233.0" />
+      <Text layoutX="14.0" layoutY="140.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Bookng Type" />
+      <ComboBox fx:id="cmbTripType" layoutX="14.0" layoutY="144.0" prefHeight="25.0" prefWidth="233.0" />
+      <Text layoutX="14.0" layoutY="195.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Package" />
+      <ComboBox fx:id="cmbPackage" layoutX="14.0" layoutY="199.0" prefHeight="25.0" prefWidth="233.0" />
+      <DatePicker fx:id="dpBookingDate" layoutX="14.0" layoutY="254.0" prefHeight="25.0" prefWidth="233.0" />
+      <Text layoutX="14.0" layoutY="250.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Date" />
+      <Button fx:id="btnSave" layoutX="401.0" layoutY="42.0" mnemonicParsing="false" prefHeight="25.0" prefWidth="90.0" text="Cancel" />
+      <Button fx:id="btnCancel" layoutX="292.0" layoutY="43.0" mnemonicParsing="false" prefHeight="16.0" prefWidth="90.0" text="Save" />
+   </children>
+</AnchorPane>

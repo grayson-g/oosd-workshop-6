@@ -9,8 +9,9 @@ public class BookingsManager {
         List<Booking> bookings = new ArrayList<>();
 
         try {
-            Connection connection = DriverManager.getConnection(
-                    "jdbc:mysql://localhost/travelexperts");
+            Connection connection = new DatabaseManager().getConnection();
+//            Connection connection = DriverManager.getConnection(
+//                    "jdbc:mysql://localhost/travelexperts");
 
             PreparedStatement statement = connection.prepareStatement(
                     "SELECT * FROM Bookings WHERE CustomerID = ?;");
@@ -25,9 +26,9 @@ public class BookingsManager {
                         results.getDate("bookingDate"),
                         results.getString("bookingNo"),
                         results.getInt("travellerCount"),
-                        results.getInt("customerID"),
+                        results.getString("customerName"),
                         results.getString("tripTypeID"),
-                        results.getInt("packageID")));
+                        results.getString("packageName")));
             }
         }
         catch (SQLException e) { }
