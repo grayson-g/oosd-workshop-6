@@ -1,5 +1,7 @@
 /**
- * Sample Skeleton for 'modifypackage-view.fxml' Controller Class
+ * 'modifypackage-view.fxml' Controller Class
+ * Created by : Deepa Thoppil
+ * Dated : 27-09-2023
  */
 
 package com.team2.oosdworkshop6;
@@ -64,6 +66,8 @@ public class ModifyPackageController {
         assert etPackageId != null : "fx:id=\"etPackageId\" was not injected: check your FXML file 'modifypackage-view.fxml'.";
         assert etPackageName != null : "fx:id=\"etPackageName\" was not injected: check your FXML file 'modifypackage-view.fxml'.";
         assert etStartDate != null : "fx:id=\"etStartDate\" was not injected: check your FXML file 'modifypackage-view.fxml'.";
+
+        /*Add event handlers for Save button*/
         btnModify.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -72,6 +76,7 @@ public class ModifyPackageController {
         });
     }
 
+    /*method to populate selected package information*/
     public void processPackage(Packages t1) {
 
         etPackageId.setText(String.valueOf((Integer) t1.getPackageId()));
@@ -82,22 +87,26 @@ public class ModifyPackageController {
         etBasePrice.setText(t1.getPkgBasePrice());
         etAgencyCommission.setText(t1.getPkgAgencyCommission());
     }
-    private void btnSaveClicked(MouseEvent mouseEvent) {
 
+    private void btnSaveClicked(MouseEvent mouseEvent) {
+        /*Establish a database connection*/
         DatabaseManager connectDB =new DatabaseManager();
         Connection conn = connectDB.getConnection();
-        String sql1 = null;
+        String sql1;
+
+
         try {
-
-
+            /*Determine the SQL statement based on the mode (edit or add)*/
             if(mode.equals("edit")){
                 sql1= "UPDATE `packages` SET `PkgName`=?," +
                         "`PkgStartDate`=?,`PkgEndDate`=?,`PkgDesc`=?," +
                         "`PkgBasePrice`=?,`PkgAgencyCommission`=? WHERE PackageId=?";
             }else{
-                sql1 = "INSERT INTO `packages`(`PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, `PkgBasePrice`, `PkgAgencyCommission`) VALUES" +
+                sql1 = "INSERT INTO `packages`(`PkgName`, `PkgStartDate`, `PkgEndDate`, `PkgDesc`, " +
+                        "`PkgBasePrice`, `PkgAgencyCommission`) VALUES" +
                         "(?,?,?,?,?,?)";
             }
+            /*Create a PreparedStatement with the SQL statement*/
             PreparedStatement stmt = conn.prepareStatement(sql1);
             stmt.setString(1,etPackageName.getText());
             stmt.setString(2,etStartDate.getText());
@@ -108,8 +117,11 @@ public class ModifyPackageController {
             if(mode.equals("edit")){
                 stmt.setInt(7,Integer.parseInt(etPackageId.getText()));
             }
+            /*Execute the SQL statement*/
             int numRows = stmt.executeUpdate();
+            /*Check if the operation was successful*/
             if(numRows == 0){
+                /*Display an error alert if the operation failed*/
                 Alert alert =  new Alert(Alert.AlertType.ERROR);
                 alert.setHeaderText("Save Failed!!!, Enter values in all fields");
                 alert.showAndWait();
@@ -117,18 +129,20 @@ public class ModifyPackageController {
                 System.out.println("Data Saved Successfully.");
 
             }
+            /*Close the db connection and current stage (dialog)*/
             conn.close();
             Node node = (Node) mouseEvent.getSource();
             Stage stage = (Stage) node.getScene().getWindow();
             stage.close();
 
         } catch (SQLException e) {
+            /*Display an error alert if a database connection error occurs*/
             Alert alert =  new Alert(Alert.AlertType.ERROR);
-            alert.setHeaderText("Save Failed!!!, Enter values in all fields");
+            alert.setHeaderText("Connection Failed!!!");
             alert.showAndWait();
         }
     }
-
+    /*method to set the mode*/
     public void passModeToDialog(String mode) {
         this.mode = mode;
 

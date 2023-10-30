@@ -1,5 +1,7 @@
 /**
- * Sample Skeleton for 'packages-view.fxml' Controller Class
+ * 'packages-view.fxml' Controller Class
+ *  Created by : Deepa Thoppil
+ *  Dated : 29-09-2023
  */
 
 package com.team2.oosdworkshop6;
@@ -59,13 +61,18 @@ public class PackagesController {
         assert btnEdit != null : "fx:id=\"btnEdit\" was not injected: check your FXML file 'packages-view.fxml'.";
         assert tblData != null : "fx:id=\"tblData\" was not injected: check your FXML file 'packages-view.fxml'.";
 
+        /*Initialize the table and buttons */
         getTableData();
+
+        /*Add a listener to the table selection*/
         tblData.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Packages>() {
             @Override
             public void changed(ObservableValue<? extends Packages> observableValue, Packages packages, Packages t1) {
                 if(tblData.getSelectionModel().isSelected(tblData.getSelectionModel().getSelectedIndex())){
                     btnDelete.setDisable(false);
                     btnEdit.setDisable(false);
+
+                    /*Add event handlers for Edit and Delete buttons*/
                     btnEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
@@ -77,7 +84,7 @@ public class PackagesController {
                         @Override
                         public void handle(MouseEvent mouseEvent) {
 
-                            boolean confirmed = showConfirmationDialog();
+                            boolean confirmed = showConfirmationDialog(); //method to display confirm message
                             if (confirmed) {
                                 getDeletePackage(t1);
                                 System.out.println("Record deleted.");
@@ -87,6 +94,8 @@ public class PackagesController {
                 }
             }
         });
+
+        /*Add an event handler for the Add button */
         btnAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -95,7 +104,7 @@ public class PackagesController {
         });
 
     }
-
+    /* Method to delete a package */
     private void getDeletePackage(Packages t1) {
 
         try {
@@ -113,15 +122,13 @@ public class PackagesController {
                 System.out.println("Package Deleted Successfully.");
             }
             conn.close();
-
-
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
         getTableData();
     }
 
-
+    /* Method to open a dialog for editing or delete a package */
     private void openDialog(Packages t1, String mode) {
         FXMLLoader fxmlloader = new FXMLLoader(HelloApplication.class.getResource("modifypackage-view.fxml"));
         Parent parent = null;
@@ -144,7 +151,7 @@ public class PackagesController {
         stage.showAndWait();
         getTableData();
     }
-
+    /** method to populate table with data from database */
     private void getTableData() {
         tblData.getColumns().clear();
         data.clear();
@@ -153,14 +160,22 @@ public class PackagesController {
             DatabaseManager connectDB =new DatabaseManager();
             Connection conn = connectDB.getConnection();
             Statement stmt = conn.createStatement();
-            ResultSet rs  = stmt.executeQuery("SELECT `PackageId` as 'Id',`PkgName` as 'PkgName',DATE_FORMAT(`PkgStartDate`, '%Y-%m-%d') as 'PkgStartDate',DATE_FORMAT(`PkgEndDate`, '%Y-%m-%d') as 'PkgEndDate',`PkgDesc` as 'Description',ROUND(`PkgBasePrice`, 2) AS `PkgBasePrice`,ROUND(`PkgAgencyCommission`, 2) AS `PkgAgencyCommission` FROM `packages`");
+            ResultSet rs  = stmt.executeQuery("SELECT `PackageId` as 'Id',`PkgName` as 'PkgName'," +
+                    "DATE_FORMAT(`PkgStartDate`, '%Y-%m-%d') as 'PkgStartDate'," +
+                    "DATE_FORMAT(`PkgEndDate`, '%Y-%m-%d') as 'PkgEndDate',`PkgDesc` as 'Description'," +
+                    "ROUND(`PkgBasePrice`, 2) AS `PkgBasePrice`," +
+                    "ROUND(`PkgAgencyCommission`, 2) AS `PkgAgencyCommission` FROM `packages`");
             ResultSetMetaData rsmd = rs.getMetaData();
             int columnCount = rsmd.getColumnCount();
-            List<String> columnNames = new ArrayList<>();
+            List<String> columnNames = new ArrayList<>(); // array to store table header
+
+            /*get column names and map them into header array */
             for (int i = 1; i <= columnCount; i++) {
                 String columnName = rsmd.getColumnName(i);
                 columnNames.add(columnName);
             }
+
+            /*Create table columns and set their headers */
             for (String columnName : columnNames) {
                 TableColumn<Packages, String> column = new TableColumn<>(columnName);
                 column.setCellValueFactory(new PropertyValueFactory<>(columnName));
@@ -181,9 +196,11 @@ public class PackagesController {
                 column.setText(columnHeader); // Set the column header text
                 tblData.getColumns().add(column);
             }
+            /* populate table with data*/
             while(rs.next()){
 
-                data.add(new Packages(rs.getInt(1),rs.getString(2),rs.getString(3),rs.getString(4),
+                data.add(new Packages(rs.getInt(1),rs.getString(2),
+                        rs.getString(3),rs.getString(4),
                         rs.getString(5),rs.getString(6),rs.getString(7)));
 
             }

@@ -1,7 +1,10 @@
 package com.team2.oosdworkshop6;
-
+/** Class for retrieving Packages data
+ * Created by : Deepa Thoppil
+ * Dated : 27-09-2023
+ */
 public class Packages {
-
+    /*member variables to store package information*/
     private int PackageId;
     private String PkgName;
     private String PkgStartDate;
@@ -10,6 +13,7 @@ public class Packages {
     private String PkgBasePrice;
     private String PkgAgencyCommission;
 
+    /**Constructor for initializing the packages info*/
     public Packages(int packageId, String pkgName, String pkgStartDate, String pkgEndDate,
                     String pkgDesc, String pkgBasePrice, String pkgAgencyCommission) {
         PackageId = packageId;
@@ -21,6 +25,7 @@ public class Packages {
         PkgAgencyCommission = pkgAgencyCommission;
     }
 
+    /**getter and setter for the member variables*/
     public int getPackageId() {
         return PackageId;
     }
@@ -72,7 +77,7 @@ public class Packages {
     public String getPkgAgencyCommission() {
         return PkgAgencyCommission;
     }
-
+    /** to display the package-specific  information*/
     public void setPkgAgencyCommission(String pkgAgencyCommission) {
         PkgAgencyCommission = pkgAgencyCommission;
     }

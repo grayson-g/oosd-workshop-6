@@ -1,18 +1,14 @@
 package com.team2.oosdworkshop6;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Properties;
 
 public class DatabaseManager {
     // Database connection parameters
     private static final String DB_URL = "jdbc:mariadb://localhost:3306/travelexperts";
-    private static final String DB_USER = "grayson";
-    private static final String DB_PASSWORD = "password";
+    private static final String DB_USER = "deepa";
+    private static final String DB_PASSWORD = "deepa";
 
     private Connection connection;
 
