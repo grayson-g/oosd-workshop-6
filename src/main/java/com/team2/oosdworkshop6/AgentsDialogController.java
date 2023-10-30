@@ -76,6 +76,7 @@ public class AgentsDialogController {
         assert tfAgtMiddleInitial != null : "fx:id=\"tfAgtMiddleInitial\" was not injected: check your FXML file 'agentdialog-view.fxml'.";
         assert tfAgtPosition != null : "fx:id=\"tfAgtPosition\" was not injected: check your FXML file 'agentdialog-view.fxml'.";
 
+        /* An event handler for the Sava button*/
         btnSave.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -83,6 +84,7 @@ public class AgentsDialogController {
             }
         });
 
+        /* An event handler for the Cancel button*/
         btnCancel.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -110,6 +112,7 @@ public class AgentsDialogController {
         }
     }*/
 
+    /* Updating agent data when finish editing */
     private void btnSaveClicked(MouseEvent mouseEvent) {
 
 
@@ -168,6 +171,7 @@ public class AgentsDialogController {
         tfAgentId.setDisable(true);
     }
 
+    /* get agent data */
     public void processAgent(Agent t1) {
         tfAgentId.setText(t1.getAgentId() + "");
         tfAgtFirstName.setText(t1.getAgtFirstName());

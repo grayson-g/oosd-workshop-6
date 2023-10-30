@@ -112,6 +112,7 @@ public class AgentsController {
         btnEdit.setDisable(true);
         btnDelete.setDisable(true);
 
+        /* Set buttons disable in different mode*/
         tvAgents.getSelectionModel().selectedItemProperty().addListener((observable, notSelected,selected)-> {
             if (selected != null) {
                 btnEdit.setDisable(false);
@@ -121,7 +122,7 @@ public class AgentsController {
                 btnDelete.setDisable(true);
             }
         });
-
+        /* Combo box to display agents list */
         cbAgtName.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> observableValue, String s, String t1) {
@@ -133,6 +134,7 @@ public class AgentsController {
             }
         });
 
+        /* An event handler for the Add button*/
         btnAdd.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -141,6 +143,7 @@ public class AgentsController {
             }
         });
 
+        /* Set a delete confirmation when user decide to delete an agent*/
         btnDelete.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -155,6 +158,7 @@ public class AgentsController {
             }
         });
 
+        /* An event handler for the edit button*/
         btnEdit.setOnMouseClicked(new EventHandler<MouseEvent>() {
             @Override
             public void handle(MouseEvent mouseEvent) {
@@ -213,6 +217,7 @@ public class AgentsController {
         }
     }*/
 
+    /*Open another dialog to edit or add a new agent*/
     private void openDialog(Agent t1, String mode) {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("agentdialog-view.fxml"));
         Parent parent = null;
@@ -252,6 +257,7 @@ public class AgentsController {
         }
     }
 
+    /*load agent data from database*/
     private void loadAgentNames() {
         cbAgtName.getItems().clear();
 
@@ -275,6 +281,7 @@ public class AgentsController {
         }
     }
 
+    /* get agent data from database*/
     private void getAgents() {
         data.clear();
 
