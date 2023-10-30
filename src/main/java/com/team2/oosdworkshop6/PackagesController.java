@@ -131,7 +131,7 @@ public class PackagesController {
     /* Method to open a dialog for editing or delete a package */
     private void openDialog(Packages t1, String mode) {
         FXMLLoader fxmlloader = new FXMLLoader(HelloApplication.class.getResource("modifypackage-view.fxml"));
-        Parent parent = null;
+        Parent parent;
         try {
             parent = fxmlloader.load();
         } catch (IOException e) {
