@@ -7,8 +7,17 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 
+/* OOSD Workshop 6 - Team 2
+ *
+ * This class represents a row of the bookings table in the travelexperts
+ * database
+ *
+ * It does not represent an entry directly, as customerName and tripTypeName are
+ * used instead of their respective ids
+ */
 public class Booking {
     private int bookingId;
+    // a user-friendly string of the bookingDate for displaying
     private StringProperty bookingDateString;
     private StringProperty bookingNo;
     private IntegerProperty travellerCount;
@@ -16,9 +25,11 @@ public class Booking {
     private StringProperty tripType;
     private StringProperty packageName;
 
+    // The format used to convert between date & date string
     private final DateFormat dateFormat = new SimpleDateFormat("dd-MMM-YYYY");
     private Date bookingDate;
 
+    // Create a new booking
     public Booking(int bookingId, Date bookingDate, String bookingNo, Integer travellerCount, String customerName, String tripType, String packageName) {
         this.bookingDate = bookingDate;
         this.bookingId = bookingId;

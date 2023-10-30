@@ -23,6 +23,15 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+/* OOSD Workshop 6 - Team 2
+ *
+ * This is the controller class for the bookings-view.fxml view.
+ * It handles:
+ *     creating a dropdown of all customers in the database,
+ *     creating a table of all bookings for the currently selected customer,
+ *     and deleting bookings from the database
+ *
+ */
 public class BookingsController {
 
     @FXML
@@ -80,9 +89,11 @@ public class BookingsController {
         assert tcTravellerCount != null : "fx:id=\"tcTravellerCount\" was not injected: check your FXML file 'bookings-view.fxml'.";
         assert tcTripType != null : "fx:id=\"tcTripType\" was not injected: check your FXML file 'bookings-view.fxml'.";
 
+        // initialize the customers and customerBookings lists
         customers = new ArrayList<>();
         customerBookings = new ArrayList<>();
 
+        // customers is a list of BookingCustomer (customerId/customerName) BookingCustomer -> String
         cmbCustomers.setConverter(new StringConverter<BookingCustomer>() {
             @Override
             public String toString(BookingCustomer bookingCustomer) {
@@ -91,6 +102,7 @@ public class BookingsController {
 
             @Override
             public BookingCustomer fromString(String s) {
+                // this won't be called as the combobox is non-editable
                 for (BookingCustomer customer : customers) {
                     if (customer.getCustomerName().equals(s)) {
                         return customer;
@@ -101,12 +113,15 @@ public class BookingsController {
             }
         });
 
+        // on customer select, reload the table with that customer's data
         cmbCustomers.setOnAction(action -> {
             BookingCustomer customer = cmbCustomers.getSelectionModel().getSelectedItem();
             System.out.println(customer.getCustomerId());
             loadCustomerBookings(customer.getCustomerId());
         });
 
+        // on click edit, (if there is a booking selected) open an edit dialogue for the currently
+        // selected booking
         btnEdit.setOnAction(action -> {
             Booking booking = tblBookings.getSelectionModel().getSelectedItem();
             if (booking == null) { return; }
@@ -114,18 +129,24 @@ public class BookingsController {
             modifyBooking(booking);
         });
 
+        // on click new, open an add dialogue to create a new booking
         btnNew.setOnAction(action -> {
             modifyBooking(null);
         });
 
+        // on click delete, (if there is a booking selected) delete the booking
         btnDelete.setOnAction(action -> {
+            // check that there is a selected booking
             if (cmbCustomers.getValue() != null && tblBookings.getSelectionModel().getSelectedItem() != null) {
+                // delete the selected booking
                 deleteBooking(tblBookings.getSelectionModel().getSelectedItem().getBookingId());
             }
         });
 
+        // load the customer combobox
         loadCustomers();
 
+        // map Booking fields to corresponding column data
         tcBookingDate.setCellValueFactory(new PropertyValueFactory<Booking, String>("bookingDateString"));
         tcBookingNo.setCellValueFactory(new PropertyValueFactory<Booking, String>("bookingNo"));
         tcTravellerCount.setCellValueFactory(new PropertyValueFactory<Booking, Integer>("travellerCount"));
@@ -134,22 +155,29 @@ public class BookingsController {
         tcPackageName.setCellValueFactory(new PropertyValueFactory<Booking, String>("packageName"));
     }
 
+    // This method handles loading the list of customers from the database to be selected from
+    // the cmbCustomers dropdown.
     private void loadCustomers() {
+        // select customerId, and "lastname, firstname" for all customers
         String customersSQL =
                 "SELECT CONCAT(CustLastName, ', ', CustFirstName) as customerName, " +
                 "       CustomerId as customerId " +
                 "FROM customers;";
 
+        // empty the customers list
         customers.clear();
         cmbCustomers.getItems().clear();
 
         try {
+            // connect to the database and execute the sql statement
             Connection conn = new DatabaseManager().getConnection();
             Statement customersStatement = conn.createStatement();
             customersStatement.execute(customersSQL);
             ResultSet resultSet = customersStatement.getResultSet();
 
+            // foreach customer...
             while (resultSet.next()) {
+                // create a new BookingCustomer to add to the combobox
                 BookingCustomer customer = new BookingCustomer(
                         resultSet.getInt("customerId"),
                         resultSet.getString("customerName"));
@@ -157,6 +185,7 @@ public class BookingsController {
                 customers.add(customer);
             }
 
+            // close the connection
             resultSet.close();
             customersStatement.close();
             conn.close();
@@ -165,17 +194,24 @@ public class BookingsController {
 
         }
 
+        // sort customers by name
         customers.sort(new Comparator<BookingCustomer>() {
+            // just String.compareTo
             @Override
             public int compare(BookingCustomer o1, BookingCustomer o2) {
                 return o1.getCustomerName().compareTo(o2.getCustomerName());
             }
         });
 
+        // add the customers to the combobox
         cmbCustomers.getItems().addAll(customers);
     }
 
+    // This function handles loading bookings for the customer with id customerId
+    // and displaying them in the table
     private void loadCustomerBookings(int customerId) {
+        // sql to select booking data + related data from the database
+        // (customer name instead of id,  trip type name instead of id, package name instead of id)
         String bookingsSQL =
                 "SELECT bookings.BookingId as bookingId, " +
                         "       bookings.BookingNo as bookingNo, " +
@@ -190,14 +226,19 @@ public class BookingsController {
                         "LEFT JOIN packages ON bookings.PackageId = packages.PackageId " +
                         "WHERE bookings.CustomerId = ?;";
 
+        // clear the existing entries
         customerBookings.clear();
         tblBookings.getItems().clear();
 
         try {
+            // connect to the database
             Connection conn = new DatabaseManager().getConnection();
 
+            // set the parameter in the where clause to be customerId
             PreparedStatement bookingsStatement = conn.prepareStatement(bookingsSQL);
             bookingsStatement.setInt(1, customerId);
+
+            // execute the database
             bookingsStatement.execute();
             ResultSet resultSet = bookingsStatement.getResultSet();
 
@@ -229,21 +270,26 @@ public class BookingsController {
         tblBookings.getItems().addAll(customerBookings);
     }
 
+    // this opens the modify-booking-view in a dialogue in edit mode with the currently selected
+    // booking
     private void modifyBooking(Booking booking) {
         FXMLLoader fxmlloader = new FXMLLoader(HelloApplication.class.getResource("modify-bookings-view.fxml"));
         Parent parent = null;
 
         try {
+            // load the view
             parent = fxmlloader.load();
         }
         catch (IOException e) {
             throw new RuntimeException(e);
         }
 
+        // get the customer data
         BookingCustomer customer = cmbCustomers.getSelectionModel().getSelectedItem();
 
         if (customer == null) { return; }
 
+        // get the controller
         ModifyBookingController controller = fxmlloader.<ModifyBookingController>getController();
         if (booking == null) {
             controller.addBooking(customer);
@@ -268,13 +314,18 @@ public class BookingsController {
         loadCustomerBookings(customer.getCustomerId());
     }
 
+    // This function handles deleting a booking by bookingId
     private void deleteBooking(int bookingId) {
+        // delete any associated details first
         final String sqlDeleteDetails =
                 "DELETE FROM bookingdetails WHERE BookingId = ?;";
+
+        // then delete the booking
         final String sqlDeleteBooking =
                 "DELETE FROM bookings WHERE BookingId = ?;";
 
         try {
+            // connect to db and prepare statements
             Connection conn = new DatabaseManager().getConnection();
             PreparedStatement statementDeleteBooking = conn.prepareStatement(sqlDeleteBooking);
             PreparedStatement statementDeleteDetails = conn.prepareStatement(sqlDeleteDetails);
@@ -282,6 +333,7 @@ public class BookingsController {
             statementDeleteBooking.setInt(1, bookingId);
             statementDeleteDetails.setInt(1, bookingId);
 
+            // delete the booking/bookingdetials
             statementDeleteDetails.executeUpdate();
             statementDeleteDetails.close();
             statementDeleteBooking.executeUpdate();
@@ -289,6 +341,7 @@ public class BookingsController {
 
             conn.close();
 
+            // reload the table
             loadCustomerBookings(cmbCustomers.getValue().getCustomerId());
         }
         catch (SQLException e) {

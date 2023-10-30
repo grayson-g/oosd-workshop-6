@@ -17,6 +17,10 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
 
+/* OOSD Workshop 6 - Team 2
+ *
+ * This controller handles the adding / updating of booking data
+ */
 public class ModifyBookingController {
 
     @FXML
@@ -52,9 +56,15 @@ public class ModifyBookingController {
     @FXML
     private TextField txtTravellerCount;
 
+    // the booking we're editing (if we're editing)
     private Booking editBooking;
+    // the customer who the booking belongs to
     private BookingCustomer customer;
 
+    /*
+     * This class represents a package, but only stores the name/id for
+     * display & indexing
+     */
     private class PackageDTO {
         private final StringProperty packageName;
         private final int packageId;
@@ -77,6 +87,9 @@ public class ModifyBookingController {
         }
     }
 
+    /*
+     * This class represents a trip type, but only contains name/id for display/indexing
+     */
     private final class TripTypeDTO {
         private final StringProperty tripTypeName;
         private final String tripTypeId;
@@ -111,6 +124,7 @@ public class ModifyBookingController {
         assert txtCustomerName != null : "fx:id=\"txtCustomerName\" was not injected: check your FXML file 'modify-bookings-view.fxml'.";
         assert txtTravellerCount != null : "fx:id=\"txtTravellerCount\" was not injected: check your FXML file 'modify-bookings-view.fxml'.";
 
+        // get the db connection
         Connection connection = new DatabaseManager().getConnection();
         ResultSet rs;
         try {
@@ -122,12 +136,15 @@ public class ModifyBookingController {
               "FROM packages;");
             rs = getPackagesStatement.getResultSet();
 
+            // clear the combobox
             cmbPackage.getItems().clear();
             while (rs.next()) {
+                // add each item to the combobox
                 cmbPackage.getItems().add(
                         new PackageDTO(rs.getInt("packageId"), rs.getString("packageName")));
             }
 
+            // close resultset/statement
             rs.close();
             getPackagesStatement.close();
 
@@ -139,6 +156,7 @@ public class ModifyBookingController {
                     "FROM triptypes;");
             rs = getTripTypesStatement.getResultSet();
 
+            // clear the combobox & add the new items
             cmbTripType.getItems().clear();
             while (rs.next()) {
                 cmbTripType.getItems().add(
@@ -154,6 +172,7 @@ public class ModifyBookingController {
 
         }
 
+        // a converter for TripTypeDTO -> String
         cmbTripType.setConverter(new StringConverter<TripTypeDTO>() {
             @Override
             public String toString(TripTypeDTO tripType) {
@@ -165,9 +184,12 @@ public class ModifyBookingController {
 
             @Override
             public TripTypeDTO fromString(String string) {
+                // unnecessary, as combobox is not editable
                 return null;
             }
         });
+
+        // a converter for packagedto -> string
         cmbPackage.setConverter(new StringConverter<PackageDTO>() {
             @Override
             public String toString(PackageDTO pkg) {
@@ -179,15 +201,18 @@ public class ModifyBookingController {
 
             @Override
             public PackageDTO fromString(String string) {
+                // not editable -> N/A
                 return null;
             }
         });
 
+        // on cancel, close the dialog
         btnCancel.setOnAction(action -> {
             Node node = (Node) action.getSource();
             ((Stage)node.getScene().getWindow()).close();
         });
 
+        // on save, validate & save, if successful close the dialog
         btnSave.setOnAction(action -> {
             if (validateBooking() && saveBooking()) {
                 Node node = (Node) action.getSource();
@@ -197,16 +222,19 @@ public class ModifyBookingController {
         });
     }
 
+    // Sets the controller up for edit mode
     public void editBooking(BookingCustomer customer, Booking booking) {
         this.editBooking = booking;
         this.customer = customer;
 
+        // populate the text fields with existing data
         dpBookingDate.setValue(booking.getBookingDate().toLocalDate());
         txtBookingId.setText(booking.getBookingId() + "");
         txtBookingNo.setText(booking.getBookingNo());
         txtCustomerName.setText(booking.getCustomerName());
         txtTravellerCount.setText(booking.getTravellerCount() + "");
 
+        // select the package (if there is any)
         List<PackageDTO> packages = cmbPackage.getItems();
         for (int i = 0; i < packages.size(); i++) {
             if (packages.get(i).getPackageName().equals(booking.getPackageName())) {
@@ -214,6 +242,7 @@ public class ModifyBookingController {
             }
         }
 
+        // select the trip type if there is one (there should be)
         List<TripTypeDTO> triptypes = cmbTripType.getItems();
         for (int i = 0; i < triptypes.size(); i++) {
             if (triptypes.get(i).getTripTypeName().equals(booking.getTripType())) {
@@ -222,14 +251,17 @@ public class ModifyBookingController {
         }
     }
 
+    // sets the controller up for add mode
     public void addBooking(BookingCustomer customer) {
-        this.editBooking = null;
+        this.editBooking = null; // no booking to edit
         this.customer = customer;
 
         txtCustomerName.setText(customer.getCustomerName());
         dpBookingDate.setValue(LocalDate.now());
     }
 
+    // makes sure that all fields are filled in. Only ensures required
+    // fields are present and travellers >= 1
     private boolean validateBooking() {
         try {
             String bookingNo = txtBookingNo.getText().trim();
@@ -248,11 +280,13 @@ public class ModifyBookingController {
             return true;
         }
         catch (Exception e) { }
+        // validation failed
         return false;
     }
 
+    // attempts to save the new/existing booking to the DB
     private boolean saveBooking() {
-        final String updateSQL =
+        final String updateSQL =        // if we're updating
                 "UPDATE bookings SET " +
                 "BookingDate = ?, " +
                 "BookingNo = ?, " +
@@ -261,20 +295,23 @@ public class ModifyBookingController {
                 "PackageId = ? " +
                 "WHERE BookingId = ?;";
 
-        final String insertSQL =
+        final String insertSQL =        // if we're inserting
                 "INSERT INTO bookings (BookingDate, BookingNo, TravelerCount, CustomerId, TripTypeId, PackageId) " +
                 "VALUES " +
                 "(?, ?, ?, ?, ?, ?);";
         try {
+            // get connection
             Connection conn = new DatabaseManager().getConnection();
             PreparedStatement statement;
 
+            // get the values from the fields
             Date bookingDate = Date.valueOf(dpBookingDate.getValue());
             Integer packageId = cmbPackage.getValue() == null ? null : cmbPackage.getValue().getPackageId();
             String tripTypeId = cmbTripType.getValue().getTripTypeId();
             String bookingNo = txtBookingNo.getText();
             int travellerCount = Integer.parseInt(txtTravellerCount.getText());
             int customerId = customer.getCustomerId();
+
 
             if (editBooking != null) { // existing booking, so we're updating
                 statement = conn.prepareStatement(updateSQL);
@@ -305,6 +342,7 @@ public class ModifyBookingController {
                 }
             }
 
+            // attempt to update/insert
             int rows = statement.executeUpdate();
 
             statement.close();

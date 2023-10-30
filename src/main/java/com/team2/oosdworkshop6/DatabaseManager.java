@@ -4,11 +4,15 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+/* OOSD Workshop 6 - Team 2
+ * This class handles creating a database connection so that we store URL/username/password
+ * in a single place for editing
+ */
 public class DatabaseManager {
     // Database connection parameters
     private static final String DB_URL = "jdbc:mariadb://localhost:3306/travelexperts";
-    private static final String DB_USER = "deepa";
-    private static final String DB_PASSWORD = "deepa";
+    private static final String DB_USER = "grayson";
+    private static final String DB_PASSWORD = "password";
 
     private Connection connection;
 
