@@ -14,6 +14,7 @@ import java.text.SimpleDateFormat;
  *
  * It does not represent an entry directly, as customerName and tripTypeName are
  * used instead of their respective ids
+ * Author : Grayson
  */
 public class Booking {
     private int bookingId;

@@ -7,6 +7,7 @@ import javafx.beans.property.StringProperty;
  *
  * This class represents the customer who made a booking, without any extraneous
  * data. (i.e. the database id and a user-friendly display string)
+ * Author : Grayson
  */
 public class BookingCustomer {
     private StringProperty customerName;

@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
  * This class acts as the controller for the main view of the application,
  * it has a sidebar of buttons for selecting which sub-controller to use and
  * handles swapping out views/controllers in the application interface
+ * Author : Grayson
  */
 public class MainController {
 

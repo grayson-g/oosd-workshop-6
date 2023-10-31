@@ -20,6 +20,7 @@ import javafx.util.StringConverter;
 /* OOSD Workshop 6 - Team 2
  *
  * This controller handles the adding / updating of booking data
+ * Author : Grayson
  */
 public class ModifyBookingController {
 

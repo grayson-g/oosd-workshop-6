@@ -30,7 +30,7 @@ import javafx.util.StringConverter;
  *     creating a dropdown of all customers in the database,
  *     creating a table of all bookings for the currently selected customer,
  *     and deleting bookings from the database
- *
+ * Author : Grayson
  */
 public class BookingsController {
 
